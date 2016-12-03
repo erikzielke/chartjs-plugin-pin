@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Line Chart With Pins</title>
+    <script src="../node_modules/chart.js/dist/Chart.bundle.js"></script>
+    <script src="../chartjs-plugin-pin.js"></script>
+    <style>
+        canvas {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+<p>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi architecto consequatur, dolor ipsum laudantium porro
+    quo. Aliquid aut, corporis dicta exercitationem hic iure mollitia obcaecati officia suscipit tempora, veniam
+    vero.
+</p>
+<p>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi architecto consequatur, dolor ipsum laudantium porro
+    quo. Aliquid aut, corporis dicta exercitationem hic iure mollitia obcaecati officia suscipit tempora, veniam
+    vero.
+</p>
+<p>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi architecto consequatur, dolor ipsum laudantium porro
+    quo. Aliquid aut, corporis dicta exercitationem hic iure mollitia obcaecati officia suscipit tempora, veniam
+    vero.
+</p>
+<div style="width:75%">
+    <div>
+        <canvas id="canvas"></canvas>
+        <div id="pinHover" style="padding: 5px; background: grey; border: 1px solid darkslategrey; border-radius: 5px; display: none">Pin hover</div>
+    </div>
+</div>
+<script>
+
+    window.onload = function () {
+        var ctx = document.getElementById("canvas").getContext("2d");
+        window.myScatter = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["Monday", "Tuesday", "Wednessday", "Thursday", "Friday", "Saturday", "Sunday"],
+                datasets: [
+                    {
+                        label: "Some data",
+                        data: [1, 2, 3, 4, 5, 6, 7]
+                    }
+                ]
+            },
+            options: {
+                pin: {
+                    pins: [
+                        {
+                            "position": "Tuesday",
+                            "offset": 0.5,
+                            "icon": "pin.png",
+                            "width": 13,
+                            "height": 20,
+                            "offsetAbove": 30,
+                            "url": "http://google.dk"
+                        },
+                        {
+                            "position": "Friday",
+                            "offset": 0.8,
+                            "icon": "pin.png",
+                            "width": 12,
+                            "height": 20    ,
+                            "offsetAbove": 30,
+                            "url": "http://google.dk"
+                        }
+
+                    ],
+                    onPinHover: function (chart, pin) {
+                        var pinHover = document.getElementById('pinHover');
+                        if (pin) {
+                            pinHover.style.display = 'block';
+
+                            pinHover.style.left = chart.chart.canvas.offsetLeft + pin._view.x + -(pinHover.offsetWidth / 2) + 'px';
+                            pinHover.style.top = chart.chart.canvas.offsetTop + pin._view.y - pinHover.offsetHeight - 15 + 'px';
+                            pinHover.style.position = 'absolute';
+                        } else {
+                            pinHover.style.display = 'none';
+                        }
+                    },
+                    onPinClick: function (chart, pin) {
+                        if(pin) {
+                            window.location = pin.config.url
+                        }
+                    }
+
+                }
+            }
+        });
+    };
+</script>
+</body>
+
+</html>
